@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { ChatGptConfig } from '@/types'
+import { ChatGptConfig, PersonaInfo } from '@/types'
 import { NotificationInfo } from '@/types/admin'
 
 export interface ConfigState {
@@ -26,7 +26,8 @@ export interface ConfigState {
   website_keywords: string
   website_logo: string
   website_footer: string
-  invite_introduce: string
+  invite_introduce: string,
+  random_personas: Array<PersonaInfo>
 }
 
 const configStore = create<ConfigState>()(
@@ -42,6 +43,7 @@ const configStore = create<ConfigState>()(
       website_logo: '',
       website_footer: '',
       invite_introduce: '',
+	  random_personas: [],
       models: [
         {
           label: 'GPT-3.5',
@@ -55,26 +57,6 @@ const configStore = create<ConfigState>()(
           label: 'GPT-4',
           value: 'gpt-4'
         }
-        // {
-        //   label: 'GPT-4-0314',
-        //   value: 'gpt-4-0314'
-        // },
-        // {
-        //   label: 'GPT-4-32k',
-        //   value: 'gpt-4-32k'
-        // },
-        // {
-        //   label: 'TEXT-002',
-        //   value: 'text-davinci-002'
-        // },
-        // {
-        //   label: 'TEXT-003',
-        //   value: 'text-davinci-003'
-        // },
-        // {
-        //   label: 'CODE-002',
-        //   value: 'code-davinci-002'
-        // }
       ],
       config: {
         model: 'gpt-3.5-turbo-16k',

@@ -77,6 +77,8 @@ export interface MessageInfo {
   temperature: number
   parent_message_id: string
   status: number
+  persona_id?: string | number
+  persona?: PersonaInfo
   user?: UserInfo
   create_time: string
   update_time: string
@@ -107,6 +109,7 @@ export interface AikeyInfo {
   limit: number
   usage: number
   type: string
+  check: number
   status: number
   create_time: string
   update_time: string
@@ -270,4 +273,18 @@ export interface DialogInfo {
   status: number
   create_time: string
   update_time: string
+}
+
+
+export interface PersonaInfo {
+	id: string | number;
+	user_id?: string | number;
+	title: string;
+	emoji: string;
+	description?: string;
+	context: string;
+	status: number;
+	create_time: string;
+	update_time: string;
+	user?: UserInfo;
 }

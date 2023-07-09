@@ -32,16 +32,48 @@ const getModels = (type: string) => {
   }
   return [
     {
-      label: 'OpenAI绘画',
+      label: 'OpenAI(dall-e)绘画',
       value: 'dall-e'
     },
     {
-      label: '全部GPT4类型',
+      label: 'gpt-3.5-turbo',
+      value: 'gpt-3.5-turbo'
+    },
+    {
+      label: 'gpt-3.5-turbo-16k',
+      value: 'gpt-3.5-turbo-16k'
+    },
+    {
+      label: 'gpt-3.5-turbo-0613',
+      value: 'gpt-3.5-turbo-0613'
+    },
+    {
+      label: 'gpt-3.5-turbo-16k-0613',
+      value: 'gpt-3.5-turbo-16k-0613'
+    },
+    {
+      label: 'text-davinci-003',
+      value: 'text-davinci-003'
+    },
+    {
+      label: 'code-davinci-002',
+      value: 'code-davinci-002'
+    },
+    {
+      label: 'gpt-4',
       value: 'gpt-4'
     },
     {
-      label: '全部GPT3类型',
-      value: 'gpt-3'
+      label: 'gpt-4-0613',
+      value: 'gpt-4-0613'
+    },
+    {
+      label: 'gpt-4-32k',
+      value: 'gpt-4-32k'
+    },
+    {
+      label: 'gpt-4-32k-0613',
+      value: 'gpt-4-32k-0613'
     }
   ]
 }
@@ -105,10 +137,15 @@ function AikeyPage() {
       dataIndex: 'remarks'
     },
     {
-      title: '状态值',
+      title: '状态',
       dataIndex: 'status',
       render: (_, data) => (
-        <Tag color={data.status ? 'green' : 'red'}>{data.status ? '正常' : '异常'}</Tag>
+        <Space direction="vertical">
+          <Tag color={data.status ? 'green' : 'red'}>{data.status ? '正常' : '异常'}</Tag>
+          <Tag color={data.check ? 'green' : 'red'}>
+            {data.check ? '检查可用性' : '不检查可用性'}
+          </Tag>
+        </Space>
       )
     },
     {
@@ -121,7 +158,11 @@ function AikeyPage() {
             <p>总额：{data.limit.toFixed(2)}</p>
             <p>已用：{data.usage}</p>
             <p>剩余：{(data.limit - data.usage).toFixed(2)}</p>
-            <Progress percent={Number(((data.usage / data.limit) * 100).toFixed(2))} format={()=> ''} size="small" />
+            <Progress
+              percent={Number(((data.usage / data.limit) * 100).toFixed(2))}
+              format={() => ''}
+              size="small"
+            />
           </div>
         )
       }
@@ -261,7 +302,8 @@ function AikeyPage() {
         form={form}
         initialValues={{
           status: 1,
-          type: 'openai'
+          type: 'openai',
+		  check: 1
         }}
         onOpenChange={(visible) => {
           if (!visible) {
@@ -355,9 +397,22 @@ function AikeyPage() {
               }
             ]}
           />
-          <ProFormText name="remarks" label="备注" placeholder="备注" />
+          <ProFormRadio.Group
+            name="check"
+            label="检查可用性"
+            radioType="button"
+            options={[
+              {
+                label: '不检查',
+                value: 0
+              },
+              {
+                label: '检查',
+                value: 1
+              }
+            ]}
+          />
         </ProFormGroup>
-
         <ProFormDependency name={['type']}>
           {({ type }) => {
             return (
@@ -422,6 +477,7 @@ function AikeyPage() {
             )
           }}
         </ProFormDependency>
+		<ProFormText name="remarks" label="备注" placeholder="备注" />
       </ModalForm>
     </div>
   )
